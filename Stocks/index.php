@@ -9,11 +9,13 @@ $client = new Finnhub\Api\DefaultApi(
     new GuzzleHttp\Client(),
     $config
 );
-$search = $_GET["search"];
+$search = $_GET["search"] ?? "";
 
-$previewStocks = ["Z","AMZN","TSLA","FB"];
+$previewStocks = ["Z","AMZN","TSLA","FB","AAPL"];
 
 $tableOfSearch = json_decode(file_get_contents("https://finnhub.io/api/v1/search?q={$search}&token=c82gr7aad3ia12592efg"));
+
+
 
 function growColor(float $dp):string
 {
@@ -38,7 +40,7 @@ function growColor(float $dp):string
     }
 
     body {
-        background-color: rgb(110, 110, 110);
+        background-color: rgb(30, 30, 30);
         box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
     }
 
@@ -59,7 +61,7 @@ function growColor(float $dp):string
     p {
         padding-left: 5px;
         padding-right: 5px;
-        color: whitesmoke;
+        color: rgb(190, 190, 190);
         font-weight: bold;
     }
 
@@ -86,13 +88,14 @@ function growColor(float $dp):string
     .Stock-bg {
         border-collapse: collapse;
         width: 100%;
-        background-color: rgba(236, 236, 236, .2);
-        border: 1px solid rgb(10, 10, 10);
-        box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+        background-color: rgba(170, 170, 170, .2);
+        border-left: 1px solid rgba(10, 10, 10, .4);
+        border-right: 1px solid rgba(10, 10, 10, .4);
+        box-shadow: rgba(0, 0, 0, 0.35) 0px -50px 36px -28px inset;
     }
 
     .Top-div {
-        background-color: rgb(30, 30, 30);
+        background-color: rgb(50, 50, 50);
         box-shadow: rgba(0, 0, 0, 0.35) 0px -50px 36px -28px inset;
     }
 
@@ -103,26 +106,20 @@ function growColor(float $dp):string
         border: 2px solid rgb(70, 70, 70);
         background-color: rgba(50, 50, 50, .8);
         color: aliceblue;
+        transition: 0.2s;
+    }
+
+    .search-button {
+        width: 100px;
     }
 
     .search-button:hover {
         background-color: rgba(50, 50, 50, .5);
+        transition: 0.2s;
     }
 
-    .preview1 {
-        color: <?php echo growColor(round($client->quote($previewStocks[0])["dp"], 2)) ?>;
-    }
-
-    .preview2 {
-        color: <?php echo growColor(round($client->quote($previewStocks[1])["dp"], 2)) ?>;
-    }
-
-    .preview3 {
-        color: <?php echo growColor(round($client->quote($previewStocks[2])["dp"], 2)) ?>;
-    }
-
-    .preview4 {
-        color: <?php echo growColor(round($client->quote($previewStocks[3])["dp"], 2)) ?>;
+    .description-text {
+        color: rgb(20, 20, 20);
     }
     </style>
 </head>
@@ -130,46 +127,23 @@ function growColor(float $dp):string
 <body>
 
     <div class="Top-div">
+        <?php for ($i=0; $i < count($previewStocks); $i++): ?>
+
         <div class="Stock-bg">
-            <img src="<?php echo $client->companyProfile2($previewStocks[0])["logo"]; ?>">
+            <img src="<?php echo $client->companyProfile2($previewStocks[$i])["logo"]; ?>">
             <div class="stock-info">
                 <div>
-                    <p class="symbols"><?php echo $client->companyProfile2($previewStocks[0])["ticker"]; ?></p>
-                    <p class="price"><?php echo round($client->quote($previewStocks[0])["c"], 2); ?></p>
+                    <p class="symbols"><?php echo $client->companyProfile2($previewStocks[$i])["ticker"]; ?></p>
+                    <p class="price"><?php echo round($client->quote($previewStocks[$i])["c"], 2); ?>$</p>
                 </div>
-                <p class="AAPL"><?php echo round($client->quote($previewStocks[0])["dp"], 2); ?></p>
+                <p style="color: <?php echo growColor(round($client->quote($previewStocks[$i])["dp"], 2)) ?>; font-size:110%;">
+                    <?php echo round($client->quote($previewStocks[$i])["dp"], 2); ?>%</p>
             </div>
         </div>
-        <div class="Stock-bg">
-            <img src="<?php echo $client->companyProfile2($previewStocks[1])["logo"]; ?>">
-            <div class="stock-info">
-                <div>
-                    <p class="symbols"><?php echo $client->companyProfile2($previewStocks[1])["ticker"]; ?></p>
-                    <p class="price"><?php echo round($client->quote($previewStocks[1])["c"], 2); ?></p>
-                </div>
-                <p class="AMZN"><?php echo round($client->quote($previewStocks[1])["dp"], 2); ?></p>
-            </div>
-        </div>
-        <div class="Stock-bg">
-            <img src="<?php echo $client->companyProfile2($previewStocks[2])["logo"]; ?>">
-            <div class="stock-info">
-                <div>
-                    <p class="symbols"><?php echo $client->companyProfile2($previewStocks[2])["ticker"] ; ?></p>
-                    <p class="price"><?php echo round($client->quote($previewStocks[2])["c"], 2); ?></p>
-                </div>
-                <p class="TSLA"><?php echo round($client->quote($previewStocks[2])["dp"], 2); ?></p>
-            </div>
-        </div>
-        <div class="Stock-bg">
-            <img src="<?php echo $client->companyProfile2($previewStocks[3])["logo"]; ?>">
-            <div class="stock-info">
-                <div>
-                    <p class="symbols"><?php echo $client->companyProfile2($previewStocks[3])["ticker"]; ?></p>
-                    <p class="price"><?php echo round($client->quote($previewStocks[3])["c"], 2); ?></p>
-                </div>
-                <p class="FB"><?php echo round($client->quote($previewStocks[3])["dp"], 2); ?></p>
-            </div>
-        </div>
+
+        <?php endfor; ?>
+
+
     </div>
 
     <div>
@@ -181,15 +155,15 @@ function growColor(float $dp):string
     <div class="search-results">
         <table>
             <thead>
-                <th>Description</th>
-                <th>Symbol</th>
+                <th class="description-text">Description</th>
+                <th class="description-text">Symbol</th>
             </thead>
             <tbody>
                 <?php foreach ($tableOfSearch->result as $result): ?>
 
                 <tr>
-                    <td><?php echo $result->description; ?></td>
-                    <td><?php echo $result->symbol; ?></td>
+                    <td class="description-text"><?php echo $result->description; ?></td>
+                    <td class="description-text"><?php echo $result->symbol; ?></td>
                 </tr>
 
                 <?php endforeach ?>
