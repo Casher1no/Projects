@@ -84,8 +84,8 @@ function growColor(float $dp):string
     }
 
     .Stock-bg {
-
-        border-radius: 5%;
+        border-collapse: collapse;
+        width: 100%;
         background-color: rgba(236, 236, 236, .2);
         border: 1px solid rgb(10, 10, 10);
         box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
@@ -109,19 +109,19 @@ function growColor(float $dp):string
         background-color: rgba(50, 50, 50, .5);
     }
 
-    .AAPL {
+    .preview1 {
         color: <?php echo growColor(round($client->quote($previewStocks[0])["dp"], 2)) ?>;
     }
 
-    .AMZN {
+    .preview2 {
         color: <?php echo growColor(round($client->quote($previewStocks[1])["dp"], 2)) ?>;
     }
 
-    .TSLA {
+    .preview3 {
         color: <?php echo growColor(round($client->quote($previewStocks[2])["dp"], 2)) ?>;
     }
 
-    .FB {
+    .preview4 {
         color: <?php echo growColor(round($client->quote($previewStocks[3])["dp"], 2)) ?>;
     }
     </style>
