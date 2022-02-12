@@ -40,8 +40,15 @@ function growColor(float $dp):string
     }
 
     body {
+        background-image: url("/images/page-bg.jpg");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
+
+
         background-color: #2C2F40;
-        box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+
     }
 
     img {
@@ -76,11 +83,12 @@ function growColor(float $dp):string
         width: 60%;
     }
 
-    .symbols,.price {
+    .symbols,
+    .price {
         vertical-align: text-top;
         color: #8D93A6;
     }
- 
+
 
     .stock-info {
         display: table;
@@ -106,8 +114,8 @@ function growColor(float $dp):string
         border-radius: 6px;
         padding: 5px;
         border: 2px solid rgb(70, 70, 70);
-        background-color: rgba(50, 50, 50, .8);
-        color: aliceblue;
+        background-color: #131826;
+        color: #585F73;
         transition: 0.2s;
     }
 
@@ -122,6 +130,14 @@ function growColor(float $dp):string
 
     .description-text {
         color: rgb(20, 20, 20);
+    }
+    .search-result-text{
+        font-size: 85%;
+    }
+    .search-div{
+        padding: 0px;
+        background-color: #2C2F40;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
     }
     </style>
 </head>
@@ -138,7 +154,8 @@ function growColor(float $dp):string
                     <p class="symbols"><?php echo $client->companyProfile2($previewStocks[$i])["ticker"]; ?></p>
                     <p class="price"><?php echo round($client->quote($previewStocks[$i])["c"], 2); ?>$</p>
                 </div>
-                <p style="color: <?php echo growColor(round($client->quote($previewStocks[$i])["dp"], 2)) ?>; font-size:110%;">
+                <p
+                    style="color: <?php echo growColor(round($client->quote($previewStocks[$i])["dp"], 2)) ?>; font-size:110%;">
                     <?php echo round($client->quote($previewStocks[$i])["dp"], 2); ?>%</p>
             </div>
         </div>
@@ -148,11 +165,14 @@ function growColor(float $dp):string
 
     </div>
 
-    <div>
+    <div class="search-div">
         <form method="GET" action="/">
             <input class="search-input" name="search" value="" placeholder="AAPL..." />
             <button class="search-button" type="submit">Search</button>
         </form>
+        <div>
+            <p class="search-result-text">Search results: <?php echo $tableOfSearch->count ?></p>
+        </div>
     </div>
     <div class="search-results">
         <table>
