@@ -40,7 +40,7 @@ function growColor(float $dp):string
     }
 
     body {
-        background-color: rgb(30, 30, 30);
+        background-color: #2C2F40;
         box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
     }
 
@@ -68,18 +68,19 @@ function growColor(float $dp):string
     table,
     th,
     td {
-        border: 1px solid black;
-        background-color: rgba(236, 236, 236, .2);
+        border: 1px solid #131826;
+        background-color: #585F73;
     }
 
     table {
         width: 60%;
     }
 
-    .symbols {
+    .symbols,.price {
         vertical-align: text-top;
-
+        color: #8D93A6;
     }
+ 
 
     .stock-info {
         display: table;
@@ -88,15 +89,16 @@ function growColor(float $dp):string
     .Stock-bg {
         border-collapse: collapse;
         width: 100%;
-        background-color: rgba(170, 170, 170, .2);
+        background-color: #131826;
         border-left: 1px solid rgba(10, 10, 10, .4);
         border-right: 1px solid rgba(10, 10, 10, .4);
         box-shadow: rgba(0, 0, 0, 0.35) 0px -50px 36px -28px inset;
     }
 
     .Top-div {
-        background-color: rgb(50, 50, 50);
+
         box-shadow: rgba(0, 0, 0, 0.35) 0px -50px 36px -28px inset;
+        padding: 0px;
     }
 
     .search-input,
@@ -155,8 +157,8 @@ function growColor(float $dp):string
     <div class="search-results">
         <table>
             <thead>
-                <th class="description-text">Description</th>
-                <th class="description-text">Symbol</th>
+                <th class="description-text">DESCRIPTION</th>
+                <th class="description-text">SYMBOL</th>
             </thead>
             <tbody>
                 <?php foreach ($tableOfSearch->result as $result): ?>
