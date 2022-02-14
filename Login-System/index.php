@@ -23,7 +23,10 @@ session_start();
         background-repeat: no-repeat;
         background-attachment: fixed;
     }
-
+    h4{
+        font-weight: bolder;
+        color: #fffdf5;
+    }
     ul {
         list-style-type: none;
     }
