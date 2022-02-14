@@ -11,49 +11,60 @@ session_start();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200&family=Quicksand:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200&family=Quicksand:wght@300&display=swap"
+        rel="stylesheet">
     <title>Login</title>
     <style>
-    *{
+    * {
         font-family: 'Quicksand', sans-serif;
-    }    
+    }
+
     body {
         background: rgb(242, 92, 92);
         background: linear-gradient(180deg, rgba(242, 92, 92, 1) 0%, rgba(242, 178, 141, 1) 100%);
         background-repeat: no-repeat;
         background-attachment: fixed;
     }
-    h4{
+
+    h4 {
         font-weight: bolder;
         color: #fffdf5;
     }
+
     ul {
         list-style-type: none;
     }
-    li{
+
+    li {
         float: left;
         padding-left: 15px;
 
     }
-    a{
+
+    a {
         font-weight: bolder;
     }
-    a:link, a:visited{
+
+    a:link,
+    a:visited {
         text-decoration: none;
         color: aliceblue;
     }
-    a:hover{
+
+    a:hover {
         color: blueviolet;
         transition: .2s;
     }
-    button{
+
+    button {
         border: none;
         border-radius: 4px;
         background-color: #F2786D;
         width: 80px;
         margin: auto;
     }
-    button:hover{
+
+    button:hover {
         background-color: #F25C5C;
         transition: .2s;
     }
@@ -69,6 +80,14 @@ session_start();
         box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
         margin-top: 5px;
 
+    }
+    .welcome-text{
+        margin: auto;
+        width: auto;
+        text-align: center;
+        padding-top: 350px;
+        color: #F25C5C;
+        font-size: 40px;
     }
 
 
@@ -90,7 +109,6 @@ session_start();
                 <?php
                 if (isset($_SESSION["userid"])) {
                     ?>
-                <li><a href="#"><?php echo $_SESSION["useruid"]; ?></a></li>
                 <li><a href="includes/logout.inc.php" class="header-login-a">LOGOUT</a></li>
                 <?php
                 } else {
@@ -103,6 +121,16 @@ session_start();
 
             </ul>
         </div>
+
+        <?php
+        if (isset($_SESSION["userid"])) {
+            ?>
+        <div class="welcome-text">
+            <h1>You are logged in as <?php echo $_SESSION["useruid"]; ?>!</h1>
+        </div>
+        <?php
+        } else {
+            ?>
 
         <div class="index-login-signup">
             <h4>SIGN UP</h4>
@@ -124,6 +152,9 @@ session_start();
                 <button type="submit" name="submit">LOGIN</button>
             </form>
         </div>
+        <?php
+        }
+            ?>
     </div>
 </body>
 
