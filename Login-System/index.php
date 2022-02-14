@@ -11,27 +11,95 @@ session_start();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200&family=Quicksand:wght@300&display=swap" rel="stylesheet">
     <title>Login</title>
+    <style>
+    *{
+        font-family: 'Quicksand', sans-serif;
+    }    
+    body {
+        background: rgb(242, 92, 92);
+        background: linear-gradient(180deg, rgba(242, 92, 92, 1) 0%, rgba(242, 178, 141, 1) 100%);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+    ul {
+        list-style-type: none;
+    }
+    li{
+        float: left;
+        padding-left: 15px;
+
+    }
+    a{
+        font-weight: bolder;
+    }
+    a:link, a:visited{
+        text-decoration: none;
+        color: aliceblue;
+    }
+    a:hover{
+        color: blueviolet;
+        transition: .2s;
+    }
+    button{
+        border: none;
+        border-radius: 4px;
+        background-color: #F2786D;
+        width: 80px;
+        margin: auto;
+    }
+    button:hover{
+        background-color: #F25C5C;
+        transition: .2s;
+    }
+
+    .index-login-signup,
+    .index-login-login {
+        padding: 20px;
+        border: 1px;
+        border-radius: 5%;
+        margin: auto;
+        width: 200px;
+        background-color: #F2B28D;
+        box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+        margin-top: 5px;
+
+    }
+
+
+    input {
+        padding: 5px;
+        margin: 1px 0;
+        display: inline-block;
+        border: 2px solid #F2786D;
+        border-radius: 8px;
+        box-sizing: border-box;
+    }
+    </style>
 </head>
 
 <body>
-    <div>
-        <ul>
-            <?php
+    <div class="main-ui">
+        <div class="ui-login-signup">
+            <ul>
+                <?php
                 if (isset($_SESSION["userid"])) {
                     ?>
-            <li><a href="#"><?php echo $_SESSION["useruid"]; ?></a></li>
-            <li><a href="includes/logout.inc.php" class="header-login-a">LOGOUT</a></li>
-            <?php
+                <li><a href="#"><?php echo $_SESSION["useruid"]; ?></a></li>
+                <li><a href="includes/logout.inc.php" class="header-login-a">LOGOUT</a></li>
+                <?php
                 } else {
                     ?>
-            <li><a href="#">SIGN UP</a></li>
-            <li><a href="#" class="header-login-a">LOGIN</a></li>
-            <?php
+                <li><a href="#">SIGN UP</a></li>
+                <li><a href="#" class="header-login-a">LOGIN</a></li>
+                <?php
                 }
             ?>
 
-        </ul>
+            </ul>
+        </div>
 
         <div class="index-login-signup">
             <h4>SIGN UP</h4>
