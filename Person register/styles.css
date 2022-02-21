@@ -1,0 +1,70 @@
+*{
+    font-family: 'Quicksand', sans-serif;
+}
+body{
+    background: #2F2536;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+input{
+    margin: auto;
+    display: block;
+    padding: 3px;
+    margin-top: 5px;
+}
+button{
+    margin: auto;
+    display: block;
+}
+table,th,td{
+    color: black;
+    margin: auto;
+    background-color: #BDBDFF;
+}
+td{
+    padding-right: 10px;
+    padding-left: 10px;
+    border-bottom: 3px solid #FAF5F8;
+}
+table{
+    border-radius: 5px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+fieldset{
+    margin: auto;
+    width: 270px;
+    border-radius: 8px;
+    background-color: #EBEEF2;
+    border: 5px solid #BDBDFF;
+}
+legend{
+    color: #1F1F1F;
+    font-weight: 800;
+    background-color: #EBEEF2;
+    border-radius: 5px;
+    border-top: 5px solid #BDBDFF;
+    border-left: 5px solid #BDBDFF;
+    border-right: 5px solid #BDBDFF;
+}
+.table{
+    margin-top: 20px;
+    font-size: 20px;
+}
+input{
+    background-color: #BDBDFF;
+    border-radius: 5px;
+}
+button{
+    background-color: #BDBDFF;
+    border-radius: 5px;
+    border: none;
+    padding: 3px 15px 3px 15px;
+    text-transform: uppercase;
+}
+button:hover{
+    background-color: #FAF5F8;
+    transition: .2s;
+}
+button:active{
+    background-color: #1F1F1F;
+}
