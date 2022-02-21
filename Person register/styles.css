@@ -3,8 +3,9 @@
 }
 body{
     background: #2F2536;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    margin: 0;
+    width: auto;
+    overflow: hidden;
 }
 input{
     margin: auto;
@@ -36,6 +37,7 @@ fieldset{
     border-radius: 8px;
     background-color: #EBEEF2;
     border: 5px solid #BDBDFF;
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
 }
 legend{
     color: #1F1F1F;
@@ -46,10 +48,7 @@ legend{
     border-left: 5px solid #BDBDFF;
     border-right: 5px solid #BDBDFF;
 }
-.table{
-    margin-top: 20px;
-    font-size: 20px;
-}
+
 input{
     background-color: #BDBDFF;
     border-radius: 5px;
@@ -67,4 +66,16 @@ button:hover{
 }
 button:active{
     background-color: #1F1F1F;
+}
+
+.table{
+    margin-top: 20px;
+    font-size: 20px;
+}
+.Header{
+    background-color: #BDBDFF;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+    padding: 15px;
 }

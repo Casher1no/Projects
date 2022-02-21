@@ -43,6 +43,9 @@ $userDatabase = $conn->fetchAllAssociative('SELECT * FROM users');
 </head>
 
 <body>
+    <div class="Header">
+        <h1>PERSON REGISTER</h1>
+    </div>
 
     <form method="post">
         <input type="text" name="name" placeholder="Name">
