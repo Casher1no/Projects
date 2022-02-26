@@ -12,12 +12,11 @@ class View
         $this->path = $path;
         $this->variables = $variables;
     }
-
-    public function getPath(): string
+    public function getPath():string
     {
         return $this->path;
     }
-    public function getVariables(): array
+    public function getVariables():array
     {
         return $this->variables;
     }

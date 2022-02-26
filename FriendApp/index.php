@@ -1,15 +1,13 @@
 <?php
 
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
-use App\Controllers\UsersController;
 use App\View;
+use App\Controller\ArticleController;
 
-require_once 'vendor/autoload.php';
+require 'vendor/autoload.php';
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
-    $r->addRoute('GET', '/users', [UsersController::class ,'index']);
-    $r->addRoute('GET', '/users/{id:\d+}', [UsersController::class,'show']);
+    $r->addRoute('GET', '/articles', [ArticleController::class, 'index']);
+    $r->addRoute('GET', '/articles/{id:\d+}', [ArticleController::class, 'show']);
 });
 
 // Fetch method and URI from somewhere
@@ -40,10 +38,12 @@ switch ($routeInfo[0]) {
 
         $response = (new $controller)->$method($routeInfo[2]);
 
-        $twig = new Environment(new FilesystemLoader('app/Views'));
 
-        echo $twig->render($response->GetPath(), $response->getVariables());
-        
+        $loader = new \Twig\Loader\FilesystemLoader('app/View');
+        $twig = new \Twig\Environment($loader);
+        if ($response instanceof View) {
+            echo $twig->render($response->getPath() . ".html", $response->getVariables());
+        }
 
         break;
 }
