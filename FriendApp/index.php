@@ -13,6 +13,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     $r->addRoute('GET', '/articles/create', [ArticleController::class, 'create']);
     $r->addRoute('POST', '/articles', [ArticleController::class, 'store']);
     $r->addRoute('POST', '/articles/{id:\d+}/delete', [ArticleController::class, 'delete']);
+    $r->addRoute('POST', '/articles/{id:\d+}/update', [ArticleController::class, 'edit']);
 });
 
 // Fetch method and URI from somewhere

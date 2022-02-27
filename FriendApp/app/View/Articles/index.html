@@ -10,6 +10,9 @@
     <form method="post" action="/articles/{{ article.id }}/delete">
       <button type="submit" onclick="return confirm('Are you sure?')">X</button>
     </form>
+    <form method="post" action="/articles/{{ article.id }}/update">
+    <button type="submit">Edit</button>
+    </form>
   </li>
 
   {% endfor %}

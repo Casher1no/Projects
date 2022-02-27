@@ -80,4 +80,27 @@ class ArticleController
 
         return new Redirect('/articles');
     }
+    public function edit(array $vars):View
+    {
+        $articlesQuery = Database::connection()
+            ->createQueryBuilder()
+            ->select('*')
+            ->from('articles')
+            ->where("id = ?")
+            ->setParameter(0, (int) $vars['id'])
+            ->fetchAllAssociative();
+
+       
+
+        $article = new Article(
+            $articlesQuery[0]['title'],
+            $articlesQuery[0]['description_text'],
+            $articlesQuery[0]['created_at'],
+            $articlesQuery[0]['id']
+        );
+
+        return new View("Articles/edit", [
+            'article' => $article
+        ]);
+    }
 }
