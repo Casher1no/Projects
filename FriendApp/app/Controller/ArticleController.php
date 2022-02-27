@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\View;
 use App\Model\Article;
 use App\Database;
+use App\Redirect;
 
 class ArticleController
 {
@@ -13,6 +14,7 @@ class ArticleController
             ->createQueryBuilder()
             ->select('*')
             ->from('articles')
+            ->orderBy('created_at', 'desc')
             ->fetchAllAssociative();
 
         $articles = [];
@@ -55,5 +57,27 @@ class ArticleController
         return new View("Articles/show", [
             'article' => $article
         ]);
+    }
+    public function create():View
+    {
+        return new View('Articles/create');
+    }
+    public function store():Redirect
+    {
+        $articlesQuery = Database::connection()
+        ->insert('articles', [
+            'title' => $_POST['title'],
+            'description_text' => $_POST['description']
+        ]);
+
+        return new Redirect('/articles');
+    }
+    public function delete(array $vars):Redirect
+    {
+        $articlesQuery = Database::connection()
+            ->delete('articles', ['id'=>(int)$vars['id']
+            ]);
+
+        return new Redirect('/articles');
     }
 }

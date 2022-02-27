@@ -1,13 +1,18 @@
 <?php
 
+use App\Redirect;
 use App\View;
 use App\Controller\ArticleController;
 
 require 'vendor/autoload.php';
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
+    // Articles
     $r->addRoute('GET', '/articles', [ArticleController::class, 'index']);
     $r->addRoute('GET', '/articles/{id:\d+}', [ArticleController::class, 'show']);
+    $r->addRoute('GET', '/articles/create', [ArticleController::class, 'create']);
+    $r->addRoute('POST', '/articles', [ArticleController::class, 'store']);
+    $r->addRoute('POST', '/articles/{id:\d+}/delete', [ArticleController::class, 'delete']);
 });
 
 // Fetch method and URI from somewhere
@@ -38,12 +43,14 @@ switch ($routeInfo[0]) {
 
         $response = (new $controller)->$method($routeInfo[2]);
 
-
-        $loader = new \Twig\Loader\FilesystemLoader('app/View');
-        $twig = new \Twig\Environment($loader);
+        $twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader('app/View'));
+        
         if ($response instanceof View) {
             echo $twig->render($response->getPath() . ".html", $response->getVariables());
         }
-
+        if ($response instanceof Redirect) {
+            header("Location: ". $response->getPath());
+            exit;
+        }
         break;
 }
