@@ -6,6 +6,8 @@ use App\Redirect;
 use App\View;
 use App\Controller\ArticleController;
 use App\Controller\SignupController;
+use App\Controller\LoginController;
+use App\Controller\LogoutController;
 
 require 'vendor/autoload.php';
 
@@ -13,7 +15,13 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     // Sign Up
     $r->addRoute('GET', '/signup', [SignupController::class, 'signUp']);
     $r->addRoute('POST', '/signup', [SignupController::class, 'signUpUser']);
+    
+    // Login
+    $r->addRoute('GET', '/login', [LoginController::class, 'login']);
+    $r->addRoute('POST', '/login', [LoginController::class, 'loginUser']);
 
+    // Logout
+    $r->addRoute('GET', '/logout', [LogoutController::class, 'logout']);
 
     // Articles
     $r->addRoute('GET', '/articles', [ArticleController::class, 'index']);
@@ -22,6 +30,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     $r->addRoute('POST', '/articles', [ArticleController::class, 'store']);
     $r->addRoute('POST', '/articles/{id:\d+}/delete', [ArticleController::class, 'delete']);
     $r->addRoute('POST', '/articles/{id:\d+}/update', [ArticleController::class, 'edit']);
+    $r->addRoute('POST', '/articles/{id:\d+}/confirm', [ArticleController::class, 'update']);
 });
 
 // Fetch method and URI from somewhere

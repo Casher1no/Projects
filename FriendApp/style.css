@@ -1,0 +1,122 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
+* {
+  font-family: "Montserrat", sans-serif;
+  margin: auto;
+}
+body {
+  background: #e6e6fa;
+}
+table,
+th,
+td {
+  color: black;
+  margin: auto;
+  background-color: #bdbdff;
+  text-align: center;
+}
+td {
+  padding-right: 10px;
+  padding-left: 10px;
+  border-bottom: 3px solid #faf5f8;
+}
+table {
+  margin-top:20px;
+  border-radius: 5px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    width: 35%;
+}
+a{
+  text-decoration: none;
+  color: #662d91;
+}
+h3{
+    margin: auto;
+    text-align: center;
+    padding: 24px;
+    background-color: #2c2c7d;
+    font-size: 32px;
+}
+input {
+    padding: 5px;
+    margin: 1px 0;
+    display: inline-block;
+    border: 2px solid #F2786D;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+.index-login-signup,
+    .index-login-login {
+        padding: 20px;
+        border: 1px;
+        border-radius: 5%;
+        margin: auto;
+        width: 200px;
+        background-color: #F2B28D;
+        box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+        margin-top: 5px;
+
+    }
+.Menu-text:link, .Menu-text:visited {
+  text-decoration: none;
+}
+.Menu-text{
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 2px 8px 2px 8px;
+    font-weight: bolder;
+    color: #662d91;
+    border:1px solid #D8BFD8;
+    border-radius: 5px;
+    background: #D8BFD8;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+.Menu-text:hover {
+  color: #1d1160;
+  transition: .2s;
+}
+.click-on-title{
+    background-color: #9e9ef7;
+}
+.click-on-title:hover{
+    background-color: #8585c9;
+    transition: .2s;
+}
+.title{
+    font-weight:bolder;
+    color: #2c2c7d;
+}
+.Menu-box{
+    width:20%;
+    float:left;
+    padding-top: 10px;
+}
+.login-alert{
+    font-size:22px;
+    padding: 12px;
+    font-weight:bolder;
+}
+.create-article-link{
+    margin:20px;
+    font-size:18px;
+    transition: .2s;
+}
+.create-article-link:hover{
+    font-size: 22px;
+    transition: .2s;
+}
+.author-button{
+    border:none;
+    width:100%;
+}
+.description{
+    text-align:center;
+    width:50%;
+    background-color:rgba(184, 149, 184,.5);
+    border-radius: 5px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+.article-info{
+    margin:20px;
+    padding:10px;
+}

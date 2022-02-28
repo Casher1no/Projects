@@ -1,9 +1,6 @@
 <?php
 namespace App\Model;
 
-use App\Redirect;
-use App\Database;
-
 class Signup
 {
     private string $email;

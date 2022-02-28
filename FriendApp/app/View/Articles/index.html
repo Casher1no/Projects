@@ -1,31 +1,52 @@
-<h3>All articles</h3>
-<a href="/signup">Sign Up</a>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Articles</title>
+  <link rel="stylesheet" href="../../../style.css">
+</head>
 
-<div class="index-login-login">
-    <h4>LOGIN</h4>
-    <form action="includes/login.inc.php" method="post">
-        <input type="text" name="uid" placeholder="Username">
-        <input type="password" name="pwd" placeholder="Password">
-        <br>
-        <button type="submit" name="submit">LOGIN</button>
-    </form>
+<h3>ARTICLES</h3>
+<div class="Menu-box">
+{% if userName == null %}
+  <a class="Menu-text" href="/signup">Sign Up</a>
+  <a class="Menu-text" href="/login">Login</a>
+{% else %}
+  <a class="Menu-text" href="/logout">Logout</a>
+
+  <p class="login-alert">Logged in as: {{userName}}</p>
+{% endif %}
+
+
+
+{% if userName == null %}
+  <p class="login-alert">Login to add a new article</p>
+{% else %}
+  <a class="create-article-link" href="/articles/create">Create New Article</a>
+{% endif %}
 </div>
-
-<a href="/articles/create">Create New Article</a>
-<ul>
+<table>
+  <thead>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Created at</th>
+  </thead>
+  <tbody>
   {% for article in articles %}
+  <tr>
+    <td class="click-on-title"><a class="title" href="/articles/{{ article.id }}"> {{ article.title }} </a></td>
+    <td><p> {{ article.author }} </p></td>
+    <td><p> {{ article.createdAt }} </p></td>
+    {% if userId == article.authorId and userName != null %}
+    <td><form method="post" action="/articles/{{ article.id }}/delete">
+      <button class="author-button" type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+    </form></td>
 
-  <li>
-    <a href="/articles/{{ article.id }}">
-        {{ article.title }}
-    </a>
-    <form method="post" action="/articles/{{ article.id }}/delete">
-      <button type="submit" onclick="return confirm('Are you sure?')">X</button>
-    </form>
-    <form method="post" action="/articles/{{ article.id }}/update">
-    <button type="submit">Edit</button>
-    </form>
-  </li>
-
+    <td><form method="post" action="/articles/{{ article.id }}/update">
+      <button class="author-button" type="submit">Edit</button>
+    </form></td>
+    {% endif %}
+  </tr>
   {% endfor %}
-</ul>
+</tbody>
+</table>

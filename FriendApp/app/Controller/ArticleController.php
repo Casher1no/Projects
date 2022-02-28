@@ -6,6 +6,8 @@ use App\Model\Article;
 use App\Database;
 use App\Redirect;
 
+session_start();
+
 class ArticleController
 {
     public function index():View
@@ -17,20 +19,27 @@ class ArticleController
             ->orderBy('created_at', 'desc')
             ->fetchAllAssociative();
 
+        
+
         $articles = [];
 
         foreach ($articlesQuery as $article) {
             $articles[] = new Article(
+                $article['author'],
+                (int)$article['author_id'],
                 $article['title'],
                 $article['description_text'],
                 $article['created_at'],
-                $article['id']
+                $article['id'],
             );
         }
         
+        
 
         return new View("Articles/index", [
-            'articles' => $articles
+            'articles' => $articles,
+            'userName' => $_SESSION['name'],
+            'userId' => $_SESSION['userid'],
         ]);
     }
 
@@ -47,6 +56,8 @@ class ArticleController
        
 
         $article = new Article(
+            $articlesQuery[0]['author'],
+            $articlesQuery[0]['author_id'],
             $articlesQuery[0]['title'],
             $articlesQuery[0]['description_text'],
             $articlesQuery[0]['created_at'],
@@ -67,7 +78,9 @@ class ArticleController
         $articlesQuery = Database::connection()
         ->insert('articles', [
             'title' => $_POST['title'],
-            'description_text' => $_POST['description']
+            'description_text' => $_POST['description'],
+            'author' => $_SESSION['name'],
+            'author_id' => $_SESSION['userid'],
         ]);
 
         return new Redirect('/articles');
@@ -89,10 +102,11 @@ class ArticleController
             ->where("id = ?")
             ->setParameter(0, (int) $vars['id'])
             ->fetchAllAssociative();
-
        
 
         $article = new Article(
+            $articlesQuery[0]['author'],
+            $articlesQuery[0]['author_id'],
             $articlesQuery[0]['title'],
             $articlesQuery[0]['description_text'],
             $articlesQuery[0]['created_at'],
@@ -102,5 +116,14 @@ class ArticleController
         return new View("Articles/edit", [
             'article' => $article
         ]);
+    }
+    public function update(array $vars):Redirect
+    {
+        Database::connection()->update("articles", [
+            'title' => $_POST['title'],
+            'description_text' => $_POST['description'],
+        ], ['id' => (int)$vars['id']]);
+
+        return new Redirect("/articles");
     }
 }
