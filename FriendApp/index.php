@@ -1,12 +1,19 @@
 <?php
 
+session_start();
+
 use App\Redirect;
 use App\View;
 use App\Controller\ArticleController;
+use App\Model\Signup;
 
 require 'vendor/autoload.php';
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
+    // Main Page
+    $r->addRoute('GET', '/signup', [Signup::class, '']);
+
+
     // Articles
     $r->addRoute('GET', '/articles', [ArticleController::class, 'index']);
     $r->addRoute('GET', '/articles/{id:\d+}', [ArticleController::class, 'show']);
