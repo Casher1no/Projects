@@ -5,13 +5,14 @@ session_start();
 use App\Redirect;
 use App\View;
 use App\Controller\ArticleController;
-use App\Model\Signup;
+use App\Controller\SignupController;
 
 require 'vendor/autoload.php';
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
-    // Main Page
-    $r->addRoute('GET', '/signup', [Signup::class, '']);
+    // Sign Up
+    $r->addRoute('GET', '/signup', [SignupController::class, 'signUp']);
+    $r->addRoute('POST', '/signup', [SignupController::class, 'signUpUser']);
 
 
     // Articles

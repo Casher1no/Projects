@@ -3,54 +3,76 @@ namespace App\Controller;
 
 use App\Redirect;
 use App\Database;
+use App\Model\Signup;
+use App\View;
 
 class SignupController
 {
-    public function signupUser()
+    public function signUp():View
     {
-        if ($this->emptyInput() == false) {
-            // echo "Empty input!";
-            return new Redirect("/articles");
-            exit();
-        }
-        if ($this->invalidUid() == false) {
-            // echo "Invalid username!";
-            return new Redirect("/articles");
-            exit();
-        }
-        if ($this->invalidEmail() == false) {
-            // echo "Invalid email!";
-            return new Redirect("/articles");
-            exit();
-        }
-        if ($this->pwdMatch() == false) {
-            // echo "Passwords don't match!";
-            return new Redirect("/articles");
-            exit();
-        }
-        if ($this->invalidEmail() == false) {
-            // echo "Username or email taken!";
-            return new Redirect("/articles");
-            exit();
-        }
+        return new View('/Users/signup');
+    }
 
-        $hashedPwd = password_hash($this->password, PASSWORD_DEFAULT);
+    public function signUpUser():Redirect
+    {
+        if (isset($_POST["submit"])) {
+            if ($this->emptyInput() == false) {
+                // echo "Empty input!";
+                return new Redirect("/articles");
+                exit();
+            }
+            if ($this->invalidUid() == false) {
+                // echo "Invalid username!";
+                return new Redirect("/articles");
+                exit();
+            }
+            if ($this->invalidEmail() == false) {
+                // echo "Invalid email!";
+                return new Redirect("/articles");
+                exit();
+            }
+            if ($this->invalidEmail() == false) {
+                // echo "Username or email taken!";
+                return new Redirect("/articles");
+                exit();
+            }
 
-        $userDatabase = Database::connection()->insert('users', [
-            'email' => $this->email,
-            'password' => $hashedPwd
-        ]);
+            $hashedPwd = password_hash($_POST["pwd"], PASSWORD_DEFAULT);
+
+        
+            Database::connection()
+            ->insert('users', [
+                'email' => $_POST['email'],
+                'password' => $hashedPwd,
+            ]);
+            
+            $createdUser = Database::connection()
+            ->createQueryBuilder()
+            ->select('id')
+            ->from('users')
+            ->where("email = ?")
+            ->setParameter(0, $_POST['email'])
+            ->fetchAllAssociative();
+            
+            Database::connection()
+            ->insert('user_profiles', [
+                'user_id' => $createdUser[0]['id'],
+                'name' => $_POST['name'],
+                'surname' => $_POST['surname'],
+                'birthday' => $_POST['birthday']
+            ]);
+        }
+        return new Redirect("/articles");
     }
 
     private function emptyInput(): bool
     {
         $result = false;
-        if (empty($this->email) ||
-            empty($this->password) ||
-            empty($this->passwordRepeat) ||
-            empty($this->name)||
-            empty($this->surname)||
-            empty($this->birthday)
+        if (empty($_POST['email']) ||
+            empty($_POST['pwd']) ||
+            empty($_POST['name'])||
+            empty($_POST['surname'])||
+            empty($_POST['birthday'])
             ) {
             $result = false;
         } else {
@@ -62,7 +84,7 @@ class SignupController
     private function invalidUid(): bool
     {
         $result =false;
-        if (!preg_match("/^[a-zA-Z0-9]*$/", $this->name) || !preg_match("/^[a-zA-Z0-9]*$/", $this->surname)) {
+        if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']) || !preg_match("/^[a-zA-Z0-9]*$/", $_POST['surname'])) {
             $result = false;
         } else {
             $result = true;
@@ -73,18 +95,7 @@ class SignupController
     private function invalidEmail(): bool
     {
         $result = false;
-        if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-            $result = false;
-        } else {
-            $result = true;
-        }
-        return $result;
-    }
-    
-    private function pwdMatch(): bool
-    {
-        $result = false;
-        if ($this->password !== $this->passwordRepeat) {
+        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
             $result = false;
         } else {
             $result = true;
