@@ -11,13 +11,21 @@
 <div class="index-login-signup">
     <h4>SIGN UP</h4>
     <form action="/signup" method="post">
-        <input type="text" name="email" placeholder="E-mail">
-        <input type="text" name="name" placeholder="Name">
-        <input type="text" name="surname" placeholder="Surname">
-        <input type="date" name="birthday">
-        <input type="password" name="pwd" placeholder="Password">
+        <input type="text" name="email" placeholder="E-mail" value="{{ inputs['email'] }}">
+        <input type="text" name="name" placeholder="Name" value="{{ inputs['name'] }}">
+        <input type="text" name="surname" placeholder="Surname" value="{{ inputs['surname'] }}">
+        <input type="date" name="birthday" value="{{ inputs['birthday'] }}">
+        <input type="password" name="password" placeholder="Password">
         <br>
-        <button type="submit" name="submit">SIGN UP</button>
-    </form>
+        <button type="submit">SIGN UP</button>
+    </form>   
+</div>
+<div class="errors">
+{% for error in errors %}
     
+    <li>
+        {{ error[0] }}
+    </li>
+
+{% endfor %} 
 </div>

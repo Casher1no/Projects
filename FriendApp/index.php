@@ -31,6 +31,13 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     $r->addRoute('POST', '/articles/{id:\d+}/delete', [ArticleController::class, 'delete']);
     $r->addRoute('POST', '/articles/{id:\d+}/update', [ArticleController::class, 'edit']);
     $r->addRoute('POST', '/articles/{id:\d+}/confirm', [ArticleController::class, 'update']);
+    
+    // Article likes
+    $r->addRoute('POST', '/articles/{id:\d+}/like', [ArticleController::class, 'like']);
+
+    // Article comment
+    $r->addRoute('POST', '/articles/{id:\d+}/comment', [ArticleController::class, 'comment']);
+    $r->addRoute('POST', '/articles/{id:\d+}/{article_id:\d+}/deleteComment', [ArticleController::class, 'deleteComment']);
 });
 
 // Fetch method and URI from somewhere
@@ -71,4 +78,11 @@ switch ($routeInfo[0]) {
             exit;
         }
         break;
+}
+
+if (isset($_SESSION['errors'])) {
+    unset($_SESSION['errors']);
+}
+if (isset($_SESSION['inputs'])) {
+    unset($_SESSION['inputs']);
 }

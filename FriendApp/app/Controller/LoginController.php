@@ -27,7 +27,7 @@ class LoginController
                 
 
                 $pwdHashed = $user[0]["password"];
-                $checkPwd = password_verify($_POST['pwd'], $pwdHashed);
+                $checkPwd = password_verify($_POST['password'], $pwdHashed);
 
                 if (!$checkPwd) {
                     return new Redirect('/login');

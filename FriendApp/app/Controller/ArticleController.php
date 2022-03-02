@@ -5,6 +5,10 @@ use App\View;
 use App\Model\Article;
 use App\Database;
 use App\Redirect;
+use App\Exceptions\FormValidationException;
+use App\Validation\ArticleFormValidation;
+use App\Validation\Errors;
+use Error;
 
 session_start();
 
@@ -18,7 +22,8 @@ class ArticleController
             ->from('articles')
             ->orderBy('created_at', 'desc')
             ->fetchAllAssociative();
-
+        
+        
         
 
         $articles = [];
@@ -64,17 +69,47 @@ class ArticleController
             $articlesQuery[0]['id']
         );
 
+        $articleLikes = Database::connection()
+        ->createQueryBuilder()
+        ->select('COUNT(id)')
+        ->from('article_likes')
+        ->where('article_id = ?')
+        ->setParameter(0, (int) $vars['id'])
+        ->fetchOne();
+
+        $articleComments = Database::connection()
+            ->createQueryBuilder()
+            ->select('*')
+            ->from('article_comments')
+            ->where("article_id = ?")
+            ->setParameter(0, (int) $vars['id'])
+            ->fetchAllAssociative();
+
 
         return new View("Articles/show", [
-            'article' => $article
+            'article' => $article,
+            'articleLikes' => (int)$articleLikes,
+            'comments' => $articleComments
         ]);
     }
     public function create():View
     {
-        return new View('Articles/create');
+        return new View('Articles/create', [
+            'errors' => Errors::getAll(),
+            'inputs' => $_SESSION['inputs'] ?? []
+        ]);
     }
     public function store():Redirect
     {
+        try {
+            $validator = (new ArticleFormValidation($_POST));
+            $validator->passes();
+        } catch (FormValidationException $exception) {
+            $_SESSION['errors'] = $validator->getErrors();
+            $_SESSION['inputs'] = $_POST;
+            return new Redirect("/articles/create");
+        }
+        
         $articlesQuery = Database::connection()
         ->insert('articles', [
             'title' => $_POST['title'],
@@ -124,6 +159,40 @@ class ArticleController
             'description_text' => $_POST['description'],
         ], ['id' => (int)$vars['id']]);
 
+            
+
         return new Redirect("/articles");
+    }
+    public function like(array $vars):Redirect
+    {
+        $articleId = (int)$vars['id'];
+        Database::connection()->insert("article_likes", [
+            'article_id' => $articleId,
+            'user_id' => $_SESSION['userid']
+        ]);
+            
+        return new Redirect("/articles/{$articleId}");
+    }
+
+    public function comment(array $vars):Redirect
+    {
+        $articleId = (int)$vars['id'];
+        Database::connection()->insert("article_comments", [
+            'article_id' => $articleId,
+            'user_id' => $_SESSION['userid'],
+            'comment' => $_POST['comment']
+        ]);
+        return new Redirect("/articles/{$articleId}");
+    }
+    public function deleteComment(array $vars):Redirect
+    {
+        $commentId = (int)$vars['id'];
+        $articleId = (int)$vars['article_id'];
+
+        Database::connection()
+            ->delete('article_comments', ['id'=>$commentId
+            ]);
+
+        return new Redirect("/articles/{$articleId}");
     }
 }

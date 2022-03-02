@@ -120,3 +120,8 @@ input {
     margin:20px;
     padding:10px;
 }
+.errors{
+  padding-top: 20px;
+  margin:auto;
+  width: 20%;
+}

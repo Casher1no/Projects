@@ -1,52 +1,45 @@
 <?php
 namespace App\Controller;
 
-use App\Redirect;
-use App\Database;
-use App\Model\Signup;
 use App\View;
+use App\Database;
+use App\Redirect;
+use App\Validation\Errors;
+use App\Validation\SignupValidation;
+use App\Exceptions\SignupValidationException;
 
 class SignupController
 {
     public function signUp():View
     {
-        return new View('/Users/signup');
+        return new View('/Users/signup', [
+            'errors' => Errors::getAll(),
+            'inputs' => $_SESSION['inputs'] ?? []
+        ]);
     }
 
     public function signUpUser():Redirect
     {
-        if (isset($_POST["submit"])) {
-            if ($this->emptyInput() == false) {
-                // echo "Empty input!";
-                return new Redirect("/articles");
-                exit();
-            }
-            if ($this->invalidUid() == false) {
-                // echo "Invalid username!";
-                return new Redirect("/articles");
-                exit();
-            }
-            if ($this->invalidEmail() == false) {
-                // echo "Invalid email!";
-                return new Redirect("/articles");
-                exit();
-            }
-            if ($this->invalidEmail() == false) {
-                // echo "Username or email taken!";
-                return new Redirect("/articles");
-                exit();
-            }
+        try {
+            $validator = (new SignupValidation($_POST));
+            $validator->passes();
+        } catch (SignupValidationException $exception) {
+            $_SESSION['errors'] = $validator->getErrors();
+            $_SESSION['inputs'] = $_POST;
+            return new Redirect("/signup");
+        }
 
-            $hashedPwd = password_hash($_POST["pwd"], PASSWORD_DEFAULT);
+
+        $hashedPwd = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
         
-            Database::connection()
+        Database::connection()
             ->insert('users', [
                 'email' => $_POST['email'],
                 'password' => $hashedPwd,
             ]);
             
-            $createdUser = Database::connection()
+        $createdUser = Database::connection()
             ->createQueryBuilder()
             ->select('id')
             ->from('users')
@@ -54,52 +47,14 @@ class SignupController
             ->setParameter(0, $_POST['email'])
             ->fetchAllAssociative();
             
-            Database::connection()
+        Database::connection()
             ->insert('user_profiles', [
                 'user_id' => $createdUser[0]['id'],
                 'name' => $_POST['name'],
                 'surname' => $_POST['surname'],
                 'birthday' => $_POST['birthday']
             ]);
-        }
+        
         return new Redirect("/articles");
-    }
-
-    private function emptyInput(): bool
-    {
-        $result = false;
-        if (empty($_POST['email']) ||
-            empty($_POST['pwd']) ||
-            empty($_POST['name'])||
-            empty($_POST['surname'])||
-            empty($_POST['birthday'])
-            ) {
-            $result = false;
-        } else {
-            $result = true;
-        }
-        return $result;
-    }
-
-    private function invalidUid(): bool
-    {
-        $result =false;
-        if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['name']) || !preg_match("/^[a-zA-Z0-9]*$/", $_POST['surname'])) {
-            $result = false;
-        } else {
-            $result = true;
-        }
-        return $result;
-    }
-
-    private function invalidEmail(): bool
-    {
-        $result = false;
-        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-            $result = false;
-        } else {
-            $result = true;
-        }
-        return $result;
     }
 }

@@ -14,3 +14,26 @@
 <p class="article-info">Author:{{article.author}}</p>
 <p class="article-info">Created at:{{article.createdAt}}</p>
 
+<p>Likes: {{ articleLikes }}</p>
+<form method="post" action="/articles/{{ article.id }}/like">
+    <button class="like-button" type="submit">Like</button>
+</form>
+<form method="post" action="/articles/{{ article.id }}/comment">
+    <div>
+        <textarea id="comment" name="comment" rows="5" cols="30"></textarea>
+    </div>
+    <div>
+        <button type="submit">Comment</button>
+    </div>
+</form>
+
+<div class="article-comments-div">
+    <ul>
+        {% for comment in comments %}
+            <li class="article-comments">{{ comment['comment'] }}</li>
+            <form method="post" action="/articles/{{ comment['id'] }}/{{ comment['article_id'] }}/deleteComment">
+                <button class="delete-comment-button" type="submit">Delete comment</button>
+            </form>
+        {% endfor %}
+    </ul>
+</div>
