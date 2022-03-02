@@ -92,7 +92,7 @@ input {
     padding-top: 10px;
 }
 .login-alert{
-    font-size:22px;
+    font-size:16px;
     padding: 12px;
     font-weight:bolder;
 }
@@ -124,4 +124,33 @@ input {
   padding-top: 20px;
   margin:auto;
   width: 20%;
+}
+.like-button{
+  margin-bottom:10px;
+  width: 70px;
+}
+.article-comments-div{
+  width:50%;
+}
+.article-comments, .article-time{
+  list-style-type: none;
+}
+.article-comments{
+  inline-size: 800px;
+  overflow-wrap: break-word;
+}
+.article-time{
+  font-size:80%;
+}
+.comment-fieldset, .comment-legend{
+  background-color:rgba(240, 240, 240,.6);
+  border: none;
+  border-radius:5px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+.comment-legend{
+  font-size: 80%;
+}
+.comment-fieldset{
+  margin-bottom: 25px;
 }

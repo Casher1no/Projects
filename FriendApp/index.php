@@ -34,6 +34,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     
     // Article likes
     $r->addRoute('POST', '/articles/{id:\d+}/like', [ArticleController::class, 'like']);
+    $r->addRoute('POST', '/articles/{id:\d+}/unlike', [ArticleController::class, 'unlike']);
 
     // Article comment
     $r->addRoute('POST', '/articles/{id:\d+}/comment', [ArticleController::class, 'comment']);

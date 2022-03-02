@@ -8,7 +8,7 @@ use App\Redirect;
 use App\Exceptions\FormValidationException;
 use App\Validation\ArticleFormValidation;
 use App\Validation\Errors;
-use Error;
+use App\Model\Comment;
 
 session_start();
 
@@ -69,27 +69,64 @@ class ArticleController
             $articlesQuery[0]['id']
         );
 
+        $commentsQuery = Database::connection()
+        ->createQueryBuilder()
+        ->select('*')
+        ->from('article_comments')
+        ->where("article_id = ?")
+        ->setParameter(0, (int) $vars['id'])
+        ->fetchAllAssociative();
+
+        $comments = [];
+
+        foreach ($commentsQuery as $comment) {
+            $commentAuthor = Database::connection()
+            ->createQueryBuilder()
+            ->select('*')
+            ->from('user_profiles')
+            ->where("user_id = ?")
+            ->setParameter(0, $comment['user_id'])
+            ->fetchAllAssociative();
+
+            $commentDate = explode(" ", $comment['commented_at'])[0];
+
+            $comments[] = new Comment(
+                $commentAuthor[0]['name'],
+                $commentAuthor[0]['surname'],
+                $comment['comment'],
+                (int)$comment['user_id'],
+                (int)$comment['article_id'],
+                $commentDate,
+                $comment['id']
+            );
+        }
+        
+
         $articleLikes = Database::connection()
         ->createQueryBuilder()
-        ->select('COUNT(id)')
+        ->select('*')
         ->from('article_likes')
         ->where('article_id = ?')
         ->setParameter(0, (int) $vars['id'])
-        ->fetchOne();
+        ->fetchAllAssociative();
 
-        $articleComments = Database::connection()
-            ->createQueryBuilder()
-            ->select('*')
-            ->from('article_comments')
-            ->where("article_id = ?")
-            ->setParameter(0, (int) $vars['id'])
-            ->fetchAllAssociative();
+        $likeId=[];
+        foreach ($articleLikes as $like) {
+            $likeId[] = $like['user_id'];
+        }
 
+        
+        $likeCount = count($articleLikes);
+        
 
         return new View("Articles/show", [
             'article' => $article,
-            'articleLikes' => (int)$articleLikes,
-            'comments' => $articleComments
+            'articleLikes' => $articleLikes,
+            'likeCount'=> $likeCount,
+            'likeId'=> $likeId,
+            'comments' => $comments,
+            'userName' => $_SESSION['name'],
+            'userId' => $_SESSION['userid']
         ]);
     }
     public function create():View
@@ -168,6 +205,16 @@ class ArticleController
         $articleId = (int)$vars['id'];
         Database::connection()->insert("article_likes", [
             'article_id' => $articleId,
+            'user_id' => $_SESSION['userid']
+        ]);
+            
+        return new Redirect("/articles/{$articleId}");
+    }
+    public function unlike(array $vars):Redirect
+    {
+        $articleId = (int)$vars['id'];
+        Database::connection()->delete('article_likes', [
+            'article_id'=> $articleId,
             'user_id' => $_SESSION['userid']
         ]);
             

@@ -20,7 +20,7 @@
 
 
 {% if userName == null %}
-  <p class="login-alert">Login to add a new article</p>
+  <a class="login-alert" href="/login">Login to add a new article</a>
 {% else %}
   <a class="create-article-link" href="/articles/create">Create New Article</a>
 {% endif %}

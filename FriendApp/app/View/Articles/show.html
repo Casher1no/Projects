@@ -13,11 +13,24 @@
 <p class="description">{{article.description}}</p>
 <p class="article-info">Author:{{article.author}}</p>
 <p class="article-info">Created at:{{article.createdAt}}</p>
+<p>Likes: {{ likeCount }}</p>
 
-<p>Likes: {{ articleLikes }}</p>
-<form method="post" action="/articles/{{ article.id }}/like">
-    <button class="like-button" type="submit">Like</button>
-</form>
+{% if userName != null %}
+    {% if userId in likeId %}
+    <form method="post" action="/articles/{{ article.id }}/unlike">
+        <button class="like-button" type="submit">Unlike</button>
+    </form>
+    {% else %}
+    <form method="post" action="/articles/{{ article.id }}/like">
+        <button class="like-button" type="submit">Like</button>
+    </form>
+    {% endif %}
+{% endif %}
+
+
+{% if userName == null %}
+<a class="login-alert" href="/login">Login to comment</a>
+{% else %}
 <form method="post" action="/articles/{{ article.id }}/comment">
     <div>
         <textarea id="comment" name="comment" rows="5" cols="30"></textarea>
@@ -26,14 +39,24 @@
         <button type="submit">Comment</button>
     </div>
 </form>
+{% endif %}
+
 
 <div class="article-comments-div">
     <ul>
         {% for comment in comments %}
-            <li class="article-comments">{{ comment['comment'] }}</li>
-            <form method="post" action="/articles/{{ comment['id'] }}/{{ comment['article_id'] }}/deleteComment">
-                <button class="delete-comment-button" type="submit">Delete comment</button>
-            </form>
+            {% if userId == comment.authorId and userName != null %}
+                <form method="post" action="/articles/{{ comment.id }}/{{ comment.articleId }}/deleteComment">
+                    <button class="delete-comment-button" type="submit">Delete comment</button>
+                </form>
+            {% endif %}
+            
+        <fieldset class="comment-fieldset">
+            <legend class="comment-legend">{{ comment.name }} {{ comment.surname }}</legend>
+            <li class="article-comments">{{ comment.comment }}</li>
+            
+            <li class="article-time"> Created at: {{ comment.createdAt }}</li>
+        </fieldset>
         {% endfor %}
     </ul>
 </div>
