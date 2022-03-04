@@ -2,12 +2,13 @@
 
 session_start();
 
-use App\Redirect;
 use App\View;
-use App\Controller\ArticleController;
-use App\Controller\SignupController;
+use App\Redirect;
 use App\Controller\LoginController;
 use App\Controller\LogoutController;
+use App\Controller\SignupController;
+use App\Controller\ArticleController;
+use App\Controller\FriendsController;
 
 require 'vendor/autoload.php';
 
@@ -39,6 +40,9 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     // Article comment
     $r->addRoute('POST', '/articles/{id:\d+}/comment', [ArticleController::class, 'comment']);
     $r->addRoute('POST', '/articles/{id:\d+}/{article_id:\d+}/deleteComment', [ArticleController::class, 'deleteComment']);
+
+    // Friends
+    $r->addRoute('GET', '/friends/{id:\d+}', [FriendsController::class, 'show']);
 });
 
 // Fetch method and URI from somewhere
