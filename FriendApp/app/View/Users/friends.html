@@ -36,7 +36,7 @@
     <button class="accept-button" type="submit">Invite</button>
   </form>
   {% for search in searchResults %}
-      <li>
+      <li class="User-search-li">
         {{ search.name }} {{ search.surname }}
       </li>
       <form method="post" action="/friends/{{ search.friendId }}">
