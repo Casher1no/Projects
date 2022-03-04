@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\View;
 use App\Database;
+use App\Redirect;
 use App\Model\Friend;
 
 class FriendsController
@@ -29,6 +30,10 @@ class FriendsController
 
         $friendsId = [];
         $inviteId = [];
+
+        if (empty($userFriends)) {
+            $userFriends = [""];
+        }
         foreach ($userFriends as $friend) {
             foreach ($userInvites as $invite) {
                 if ($friend['user_id'] == $invite['friend_id'] && $invite['user_id'] == $friend['friend_id']) {
@@ -72,13 +77,64 @@ class FriendsController
             );
         }
 
-
-
+        
+        $searchFriend = [];
+        if (isset($_SESSION['searchFriend'])) {
+            foreach ($_SESSION['searchFriend'] as $search) {
+                $search = Database::connection()
+                ->createQueryBuilder()
+                ->select('*')
+                ->from('user_profiles')
+                ->where("user_id = ?")
+                ->setParameter(0, $search)
+                ->fetchAllAssociative();
+                $searchFriend[] = new Friend(
+                    $search[0]['name'],
+                    $search[0]['surname'],
+                    $search[0]['user_id']
+                );
+            }
+        }
 
 
         return new View("Users/friends", [
             "friends" => $friendList,
-            "invites" => $inviteList
+            "invites" => $inviteList,
+            "searchResults" => $searchFriend
         ]);
+    }
+
+    public function accept(array $vars):Redirect
+    {
+        Database::connection()->insert("friends", [
+            'user_id' => $_SESSION['userid'],
+            'friend_id' => (int)$vars['id']
+        ]);
+
+        return new Redirect("/friends/{$_SESSION['userid']}");
+    }
+
+    public function search():Redirect
+    {
+        $searchResults = ucfirst($_POST['search']);
+
+        
+        $search = Database::connection()
+            ->createQueryBuilder()
+            ->select('*')
+            ->from('user_profiles')
+            ->where("name = ? and user_id not in (select friend_id from friends where user_id = ?)")
+            ->setParameter(0, $searchResults)
+            ->setParameter(1, $_SESSION['userid'])
+            ->fetchAllAssociative();
+
+        $results = [];
+        foreach ($search as $result) {
+            $results[] =(int)$result['user_id'];
+        }
+
+        $_SESSION['searchFriend'] = $results;
+
+        return new Redirect("/friends/{$_SESSION['userid']}");
     }
 }

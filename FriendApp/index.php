@@ -43,6 +43,8 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 
     // Friends
     $r->addRoute('GET', '/friends/{id:\d+}', [FriendsController::class, 'show']);
+    $r->addRoute('POST', '/friends/{id:\d+}', [FriendsController::class, 'accept']);
+    $r->addRoute('POST', '/friends/invite', [FriendsController::class, 'search']);
 });
 
 // Fetch method and URI from somewhere
@@ -90,4 +92,7 @@ if (isset($_SESSION['errors'])) {
 }
 if (isset($_SESSION['inputs'])) {
     unset($_SESSION['inputs']);
+}
+if (isset($_SESSION['searchFriend'])) {
+    unset($_SESSION['searchFriend']);
 }

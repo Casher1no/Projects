@@ -74,6 +74,7 @@ class ArticleController
         ->select('*')
         ->from('article_comments')
         ->where("article_id = ?")
+        ->orderBy('commented_at', 'desc')
         ->setParameter(0, (int) $vars['id'])
         ->fetchAllAssociative();
 
